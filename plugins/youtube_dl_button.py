@@ -1,3 +1,4 @@
+from pyrogram import enums
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # (c) Shrimadhav U K
@@ -51,7 +52,7 @@ async def youtube_dl_call_back(bot, update):
     except (FileNotFoundError) as e:
         await bot.delete_messages(
             chat_id=update.message.chat.id,
-            message_ids=update.message.message_id,
+            message_ids=update.message.id,
             revoke=True
         )
         return False
@@ -100,10 +101,10 @@ async def youtube_dl_call_back(bot, update):
     await bot.edit_message_text(
         text=Translation.DOWNLOAD_START,
         chat_id=update.message.chat.id,
-        message_id=update.message.message_id
+        message_id=update.message.id
     )
     user = await bot.get_me()
-    mention = user["mention"]
+    mention = user.mention
     description = Translation.CUSTOM_CAPTION_UL_FILE.format(mention)
     if "fulltitle" in response_json:
         description = response_json["fulltitle"][0:1021]
@@ -169,7 +170,7 @@ async def youtube_dl_call_back(bot, update):
         error_message = e_response.replace(ad_string_to_replace, "")
         await bot.edit_message_text(
             chat_id=update.message.chat.id,
-            message_id=update.message.message_id,
+            message_id=update.message.id,
             text=error_message
         )
         return False
@@ -189,7 +190,7 @@ async def youtube_dl_call_back(bot, update):
             await bot.edit_message_text(
                 chat_id=update.message.chat.id,
                 text=Translation.RCHD_TG_API_LIMIT.format(time_taken_for_download, humanbytes(file_size)),
-                message_id=update.message.message_id
+                message_id=update.message.id
             )
         else:
             is_w_f = False
@@ -205,7 +206,7 @@ async def youtube_dl_call_back(bot, update):
             await bot.edit_message_text(
                 text=Translation.UPLOAD_START,
                 chat_id=update.message.chat.id,
-                message_id=update.message.message_id
+                message_id=update.message.id
             )
             # get the correct width, height, and duration for videos greater than 10MB
             # ref: message from @BotSupport
@@ -252,13 +253,13 @@ async def youtube_dl_call_back(bot, update):
                     chat_id=update.message.chat.id,
                     audio=download_directory,
                     caption=description,
-                    parse_mode="HTML",
+                    parse_mode=enums.ParseMode.HTML,
                     duration=duration,
                     # performer=response_json["uploader"],
                     # title=response_json["title"],
                     # reply_markup=reply_markup,
                     thumb=thumb_image_path,
-                    reply_to_message_id=update.message.reply_to_message.message_id,
+                    reply_to_message_id=update.message.reply_to_message.id,
                     progress=progress_for_pyrogram,
                     progress_args=(
                         Translation.UPLOAD_START,
@@ -272,9 +273,9 @@ async def youtube_dl_call_back(bot, update):
                     document=download_directory,
                     thumb=thumb_image_path,
                     caption=description,
-                    parse_mode="HTML",
+                    parse_mode=enums.ParseMode.HTML,
                     # reply_markup=reply_markup,
-                    reply_to_message_id=update.message.reply_to_message.message_id,
+                    reply_to_message_id=update.message.reply_to_message.id,
                     progress=progress_for_pyrogram,
                     progress_args=(
                         Translation.UPLOAD_START,
@@ -289,7 +290,7 @@ async def youtube_dl_call_back(bot, update):
                     duration=duration,
                     length=width,
                     thumb=thumb_image_path,
-                    reply_to_message_id=update.message.reply_to_message.message_id,
+                    reply_to_message_id=update.message.reply_to_message.id,
                     progress=progress_for_pyrogram,
                     progress_args=(
                         Translation.UPLOAD_START,
@@ -302,14 +303,14 @@ async def youtube_dl_call_back(bot, update):
                     chat_id=update.message.chat.id,
                     video=download_directory,
                     caption=description,
-                    parse_mode="HTML",
+                    parse_mode=enums.ParseMode.HTML,
                     duration=duration,
                     width=width,
                     height=height,
                     supports_streaming=True,
                     # reply_markup=reply_markup,
                     thumb=thumb_image_path,
-                    reply_to_message_id=update.message.reply_to_message.message_id,
+                    reply_to_message_id=update.message.reply_to_message.id,
                     progress=progress_for_pyrogram,
                     progress_args=(
                         Translation.UPLOAD_START,
@@ -335,7 +336,7 @@ async def youtube_dl_call_back(bot, update):
                                 InputMediaPhoto(
                                     media=image,
                                     caption=caption,
-                                    parse_mode="html"
+                                    parse_mode=enums.ParseMode.HTML
                                 )
                             )
                         else:
@@ -348,7 +349,7 @@ async def youtube_dl_call_back(bot, update):
             await bot.send_media_group(
                 chat_id=update.message.chat.id,
                 disable_notification=True,
-                reply_to_message_id=update.message.message_id,
+                reply_to_message_id=update.message.id,
                 media=media_album_p
             )
             #
@@ -360,6 +361,6 @@ async def youtube_dl_call_back(bot, update):
             await bot.edit_message_text(
                 text=Translation.AFTER_SUCCESSFUL_UPLOAD_MSG_WITH_TS.format(time_taken_for_download, time_taken_for_upload),
                 chat_id=update.message.chat.id,
-                message_id=update.message.message_id,
+                message_id=update.message.id,
                 disable_web_page_preview=True
             )
