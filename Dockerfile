@@ -1,10 +1,20 @@
-FROM python:3.9
+# Use official Python base image
+FROM python:3.10-slim
+
+# Set working directory
 WORKDIR /app
-COPY ./ /app
-ENV PYTHONUNBUFFERED=1
-COPY requirements.txt .
-RUN pip3 install --no-cache-dir -r requirements.txt
-RUN apt-get -y update
-RUN apt-get -y upgrade
-RUN apt-get install -y ffmpeg
-CMD gunicorn app:app & python3 bot.py
+
+# Install ffmpeg and required system packages
+RUN apt-get update && \
+    apt-get install -y ffmpeg && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy project files
+COPY . /app
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Run gunicorn and bot.py in parallel
+CMD gunicorn app:app --bind 0.0.0.0:8000 & python bot.py
