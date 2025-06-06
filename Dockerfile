@@ -1,20 +1,20 @@
-# Use official Python base image
 FROM python:3.10-slim
 
-# Set working directory
 WORKDIR /app
 
-# Install ffmpeg and required system packages
+# Install ffmpeg and basic tools
 RUN apt-get update && \
-    apt-get install -y ffmpeg && \
+    apt-get install -y ffmpeg supervisor && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy project files
+# Copy all project files
 COPY . /app
 
-# Install Python dependencies
+# Install Python packages
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Run gunicorn and bot.py in parallel
-CMD gunicorn app:app --bind 0.0.0.0:8000 & python bot.py
+# Add supervisord config
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+CMD ["/usr/bin/supervisord"]
