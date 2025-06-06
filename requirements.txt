@@ -1,7 +1,7 @@
 aiohttp
 beautifulsoup4
 hachoir
-numpy
+#numpy
 Pillow
 pyrogram==2.0.106
 requests
