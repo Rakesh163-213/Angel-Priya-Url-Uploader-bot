@@ -207,7 +207,7 @@ async def ddl_call_back(bot, update):
                 await document.forward(Config.LOG_CHANNEL)
             elif tg_send_type == "vm":
                 user = await bot.get_me()
-                mention = user["mention"]
+                mention = user.mention
                 video_note = await bot.send_video_note(
                     chat_id=update.message.chat.id,
                     video_note=download_directory,
