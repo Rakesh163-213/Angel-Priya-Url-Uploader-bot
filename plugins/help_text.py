@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # (c) Shrimadhav U K
-
+from pyrogram import enums
 # the logging things
 import logging
 logging.basicConfig(level=logging.DEBUG,
@@ -33,9 +33,9 @@ async def help_user(bot, update):
         await bot.send_message(
             chat_id=update.chat.id,
             text=Translation.HELP_USER,
-            parse_mode="html",
+            parse_mode=enums.ParseMode.HTML,
             disable_web_page_preview=True,
-            reply_to_message_id=update.message_id
+            reply_to_message_id=update.id
         )
 
 
@@ -75,7 +75,7 @@ async def start(bot, update):
                     [InlineKeyboardButton("🦋 ⭑┗━━┫⦀⦙ O W N E R ⦙⦀┣━━┛⭑ 🦋", url="https://t.me/LazyDeveloperr")],
                 ]
             ),
-            reply_to_message_id=update.message_id
+            reply_to_message_id=update.id
         )
     else:
         # logger.info(update) ==         
@@ -91,6 +91,6 @@ async def start(bot, update):
                     [InlineKeyboardButton("⭑💢 𝚂 𝙾 𝙲 𝚒 𝙰 𝙻 💢⭑", url="https://instagram.com/LazyDeveloper__")],
                 ]
             ),
-            reply_to_message_id=update.message_id
+            reply_to_message_id=update.id
         )
          
