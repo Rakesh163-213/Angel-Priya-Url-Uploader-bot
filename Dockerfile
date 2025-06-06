@@ -15,6 +15,6 @@ COPY . /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Add supervisord config
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+#COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-CMD ["/usr/bin/supervisord"]
+CMD gunicorn app:app & python3 bot.py
